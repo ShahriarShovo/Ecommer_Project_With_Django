@@ -1,0 +1,86 @@
+
+
+{% load cart_tag %}
+
+<link href="https://use.fontawesome.com/releases/v5.0.1/css/all.css" rel="stylesheet">
+
+<style>
+  .badge:after{
+      content:attr(value);
+      font-size:12px;
+      color: #fff;
+      background: red;
+      border-radius:50%;
+      padding: 0 5px;
+      position:relative;
+      left:-8px;
+      top:-10px;
+      opacity:0.9;
+
+  }
+
+</style>
+
+
+
+<nav class="navbar navbar-light navbar-expand-lg  "  style="background-color: #2B547E;">
+  <div class="container">
+    <a class="navbar-brand text-white" href="{% url 'App_Shop:home' %}">ABC Book's</a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+      {% if request.user.is_authenticated %}
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{% url 'App_Shop:home' %}"   >Home</a>
+      </li>
+        
+        <li class="nav-item">
+
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-tie"></i> {{request.user.profile.username}}</a>
+          <div class="dropdown-menu" aria-labelledby="nabbarDropdown">
+            <a class="dropdown-item " href="{% url 'App_Login:profile' %}">Profile</a>
+            <a class="dropdown-item" href="{% url 'App_payment:orders' %}">Orders</a>
+            <a class="dropdown-item" href="{% url 'App_Shop:category' %}">Category</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="{% url 'App_Login:logout' %}">Logout</a>
+          </div>
+        </li>
+        <li class="nav-item ">
+          <a href="{% url 'App_Order:cart' %}" class="nav-link">
+              <i class="fa badge fa-lg text-white" value={{ request.user | cart_total }}>&#xf07a;</i>
+              
+          </a>
+        </li>
+        <form class="form-inline " action="{% url 'search' %}" method="POST">
+          {% csrf_token %} 
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" type="text" name="name">
+          <input class="btn btn-outline-success my-2 my-sm-0 text-white" type="submit" name="submit" value="Search">
+      </form>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link text-white" href="{% url 'App_Shop:home' %}" >Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="{% url 'App_Login:login' %}" >Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="{% url 'App_Login:singup' %}" >Create Account</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="{% url 'App_Shop:category' %}" >Category</a>
+        </li>
+       
+        <form class="form-inline " action="{% url 'search' %}" method="POST">
+          {% csrf_token %} 
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" type="text" name="name">
+          <input class="btn btn-outline-success my-2 my-sm-0 text-white" type="submit" name="submit" value="Search">
+      </form>
+      
+      {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
